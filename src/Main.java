@@ -4,10 +4,9 @@ import Buttons.InvertButton;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.security.Timestamp;
 
-// Draws red circles when you click the mouse
-// Uses a BufferedImage so the graphics don't disappear
 
 class Main {
 
@@ -62,12 +61,25 @@ class Main {
     private void loop() {
         currentTime = System.currentTimeMillis();
         count = 0;
-        while (count < 1000) {
-            for (int x = 0; x < myImage.getWidth(); x++) {
-                for (int y = 0; y < myImage.getHeight(); y++) {
-                    myImage.setRGB(x,y,Color.RED.getRGB());
+        int width = myImage.getWidth();
+        int height = myImage.getHeight();
+        int size = width * height;
+        int[] pixels = new int[size];
+
+        int red = new Color(255, 255, 255).getRGB();
+        int blue = new Color(0, 0, 0).getRGB();
+
+        for (int i = 0; i < size; i++) {
+                if (i % 2 > 0) {
+                    pixels[i] = blue;
+                } else {
+                    pixels[i] = red;
                 }
-            }
+
+        }
+        while (count < 1000) {
+            myImage.setRGB(0,0,width,height,
+                    pixels,0,0);
             count++;
             window.repaint();
         }
