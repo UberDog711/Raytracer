@@ -1,25 +1,39 @@
 public class PixelVectors {
-    int widthP;
-    int heightP;
-
-    double forDegrees;
-    double nearPlane;
-    double widthNearPlaneHalf;
-    double unitsPerPixel;
+    int widthPixels;
+    int heightPixels;
+    int halfWidthPixels;
+    int halfHeightPixels;
 
 
-    public PixelVectors(int width, int height, int fov, int nearPlane) {
-        this.widthP = width;
-        this.heightP = height;
-        this.forDegrees = fov;
-        this.nearPlane = nearPlane;
-        this.widthNearPlaneHalf = Math.tan(forDegrees / 2) * nearPlane;
-        this.unitsPerPixel = (widthNearPlaneHalf * 2) / widthP;
+    double fovDegrees;
+    double distancePerPixel;
+
+    double distanceFromNP;
+    double halfWidthNP;
+
+
+
+    public PixelVectors(int width, int height, double fov, double nearPlane) {
+        this.widthPixels = width;
+        this.heightPixels = height;
+        this.halfWidthPixels = width/2;
+        this.halfHeightPixels = heightPixels /2;
+        this.fovDegrees = fov;
+
+        this.distanceFromNP = nearPlane;
+        this.halfWidthNP = Math.tan(fov / 2) * nearPlane;
+
+        this.distancePerPixel = (halfWidthNP * 2) / widthPixels;
     }
+
     public double[][] generatePixelVectorsY() {
-        double[][] out = new double[widthP][3];
-        for (int pixelsX = 0; pixelsX < widthP / 2; pixelsX++) {
-            out[pixelsX][1] = pixelsX + (double) 1/2 * unitsPerPixel;
+        double[][] out = new double[widthPixels][3];
+        double angle;
+
+        for (int pixelsX = 0; pixelsX < halfWidthPixels; pixelsX++) {
+            angle = Math.toDegrees(Math.atan((pixelsX + 0.5)/distanceFromNP));
+            out[halfWidthPixels + pixelsX][1] = angle;
+            out[halfWidthPixels - pixelsX - 1][1] = angle;
         }
 
         return out;
