@@ -67,7 +67,7 @@ class Main {
         int[] pixels = new int[size];
 
         int red = new Color(255, 255, 255).getRGB();
-        int blue = new Color(0, 0, 0).getRGB();
+        int blue = new Color(255, 0, 0).getRGB();
 
         for (int i = 0; i < size; i++) {
                 if (i % 2 > 0) {
