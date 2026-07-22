@@ -11,7 +11,7 @@ public class PixelVectors {
     double distanceFromNP;
     double halfWidthNP;
 
-
+    double[][][] pixelVectors;
 
     public PixelVectors(int width, int height, double fov, double nearPlane) {
         this.widthPixels = width;
@@ -24,20 +24,25 @@ public class PixelVectors {
         this.halfWidthNP = Math.tan(fov / 2) * nearPlane;
 
         this.distancePerPixel = (halfWidthNP * 2) / widthPixels;
+        this.pixelVectors = generateVectors();
+
     }
-
-    public double[][] generatePixelVectorsY() {
-        double[][] out = new double[widthPixels][3];
-        double angle;
-
-        for (int pixelsX = 0; pixelsX < halfWidthPixels; pixelsX++) {
-            angle = Math.toDegrees(Math.atan((pixelsX + 0.5)/distanceFromNP));
-            out[halfWidthPixels + pixelsX][1] = angle;
-            out[halfWidthPixels - pixelsX - 1][1] = angle;
+    public double[][][] generateVectors() {
+        double[][][] out = new double[widthPixels][heightPixels][3];
+        for (int x = 0; x < widthPixels; x++) {
+            for (int y = 0; y < heightPixels; y++) {
+                // Side to side
+                out[x][y][0] = distancePerPixel * (x - (double) widthPixels / 2);
+                // Up and down
+                out[x][y][1] = distancePerPixel * (y - (double) heightPixels / 2);
+                // Forward and back
+                out[x][y][2] = -distanceFromNP;
+            }
         }
-
         return out;
     }
+
+
     /*
     Notes:
         With & Height - Have to be even

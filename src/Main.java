@@ -64,22 +64,18 @@ class Main {
         int width = myImage.getWidth();
         int height = myImage.getHeight();
         int size = width * height;
-        int[] pixels = new int[size];
+        int[][] pixels = new int[width][height];
 
-        int red = new Color(255, 255, 255).getRGB();
-        int blue = new Color(255, 0, 0).getRGB();
+        int red = new Color(255, 0, 0).getRGB();
+        int blue = new Color(0, 0, 255).getRGB();
+        int green = new Color(0, 255, 0).getRGB();
 
-        for (int i = 0; i < size; i++) {
-                if (i % 2 > 0) {
-                    pixels[i] = blue;
-                } else {
-                    pixels[i] = red;
-                }
-
-        }
         while (count < 1000) {
-            myImage.setRGB(0,0,width,height,
-                    pixels,0,0);
+            for (int x = 0; x < myImage.getWidth(); x++) {
+                for (int y = 0; y < myImage.getHeight(); y++) {
+                    myImage.setRGB(x,y,pixels[x][y]);
+                }
+            }
             count++;
             window.repaint();
         }
